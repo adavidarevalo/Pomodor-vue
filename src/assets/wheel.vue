@@ -15,6 +15,11 @@ svg{
     animation: rotate-center 20s linear infinite;
     width: 35px;
     height: 35px;
+    cursor: pointer;
+}
+svg:hover,
+svg:active{
+    transform: scale(1.1);
 }
 @keyframes rotate-center {
   0% {

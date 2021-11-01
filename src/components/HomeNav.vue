@@ -2,19 +2,19 @@
     <header>
         <nav>
             <button 
-            @click="selectButton(25)" 
-            v-bind:style="{background: Count === 25 ? colorButton : none}"
-            v-bind:class="{ active: Count === 25 }"
+            @click="selectButton(dataContainer.pomodoro, 1)" 
+            v-bind:style="{background: Count === 1 ? colorButton : none}"
+            v-bind:class="{ active: Count === 1 }"
             >pomodoro</button>
             <button 
-            @click="selectButton(3)" 
-            v-bind:style="{background: Count === 3 ? colorButton : none}"
-            v-bind:class="{ active: Count === 3 }"
+            @click="selectButton(dataContainer.shortbreak, 2)" 
+            v-bind:style="{background: Count === 2 ? colorButton : none}"
+            v-bind:class="{ active: Count === 2 }"
             >short break</button>
             <button 
-            @click="selectButton(15)" 
-            v-bind:style="{background: Count === 15 ? colorButton : none}"
-            v-bind:class="{ active: Count === 15 }"
+            @click="selectButton(dataContainer.longbreak, 3)" 
+            v-bind:style="{background: Count === 3 ? colorButton : none}"
+            v-bind:class="{ active: Count === 3 }"
             >long break</button>
         </nav>
     </header>
@@ -23,15 +23,30 @@
 
 export default {
     name: 'HomeNav',
+    props: ['data'],
     data(){
         return{
-            Count: 25,
-            colorButton: '#F87070'
+            Count: 1,
+            colorButton: '#F87070',
+            dataContainer: {
+                pomodoro: 25,
+                shortbreak: 5,
+                longbreak: 15,
+                font: 'Arial',
+                color: '#F87070'
+            }
+        }
+    },
+    watch: {
+        data: function (data) {
+            this.dataContainer = data
+            console.log('this.dataContainer ',this.dataContainer)
         }
     },
     methods: {
-        selectButton(value){
-            this.Count = value
+        selectButton(value, number){
+            console.log('value ',value)
+            this.Count = number
         }
     }
 }
@@ -47,6 +62,7 @@ nav{
     display: flex;
     justify-content: space-between;
     padding: 5px;
+    max-width: 350px;
 }
 button{
     border-radius: 100px;
@@ -56,6 +72,7 @@ button{
     color: #d7e0ffcc;
     background: none;
     font-weight: 700;
+    cursor: pointer;
 }
 .active{
     color: #1e213f;
