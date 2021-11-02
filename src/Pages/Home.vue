@@ -4,17 +4,21 @@
             <h1>pomodoro</h1>
             <HomeNav 
             :data='data'
+            :sound='sound'
             @count='changeMinutes($event)'
             />
         </div>
         <Clock 
         :count='count'
+        :colorElement='data'
+        @sound='changeSound($event)'
         />
         <button @click="OpenModal()">
             <wheel/>
         </button>
         <Modal 
         :modalContainer='modalContainer' 
+        :sound='sound'
         @close='CloseModal($event)' 
         @data='addData($event)'/>
     </main>
@@ -46,24 +50,29 @@ export default{
                 font: 'Arial',
                 color: '#F87070'
             },
-            count: 15
+            count: 15,
+            sound: true
         }
     },
     methods:{
         OpenModal(){
-            audioSlide.play()
+            if(this.sound){
+                audioSlide.play()
+            }
             this.modalContainer = true
         },
         CloseModal(modal){
             this.modalContainer = modal
         },
         addData(data){
+            console.log('Data...')
             this.data = data
-            console.log('this.data ', this.data)
         },
         changeMinutes(value){
-            console.log('Yes baby')
             this.count = value
+        },
+        changeSound(sound){
+            this.sound = sound
         }
     }
 

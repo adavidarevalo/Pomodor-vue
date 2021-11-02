@@ -84,7 +84,8 @@ let  audioSlide = new Audio(require('../assets/sounds/slide.mp3'))
 export default{
     name: 'Modal',
     props: [
-        'modalContainer'
+        'modalContainer',
+        'sound'
     ],
     components: {
         Close
@@ -100,12 +101,16 @@ export default{
                 longbreak: 15,
                 font: 'Arial',
                 color: '#F87070'
-            }
+            },
+            soundElement: true
         }
     },
     watch:{
         modalContainer: function(modalValue) { 
             this.modal = modalValue
+        },
+        sound: function (soundValue) {
+            this.soundElement = soundValue
         }
     },
     methods: {
@@ -114,20 +119,25 @@ export default{
             this.$emit('close',false);
         },
         sendInformation: function (e) {
-            audioSlide.play()
-            e.preventDefault();
             this.$emit('data',this.formContainer);
+            e.preventDefault();
+            this.soundFm()
             this.CloseModal()
         },
         changeColor(number, color){
-            audioSlide.play()
+            this.soundFm()
             this.color = number,
             this.formContainer.color = color
         },
         changeFont(number, font){
-            audioSlide.play()
+            this.soundFm()
             this.font = number
             this.formContainer.font = font
+        },
+        soundFm(){
+            if(this.soundElement){
+                audioSlide.play()
+            }
         }
     }
 }
@@ -187,7 +197,8 @@ input{
     background: #EEF1FA;
     border: none;
     border-radius: 25px;
-    padding: 4px;
+    padding: 5px 15px;
+    width: 50px;
     width: 80px;
     color: black;
 }
@@ -236,6 +247,11 @@ input{
     color: white;
     position: relative;
     top: 20px;
+    cursor: pointer;
+}
+.Submit:hover,
+.Submit:active{
+    transform: scale(1.1);
 }
 .colorActive{
     background-image: url('../assets/check.svg') !important;

@@ -24,7 +24,10 @@ let  audioSlide = new Audio(require('../assets/sounds/slide.mp3'))
 
 export default {
     name: 'HomeNav',
-    props: ['data'],
+    props: [
+        'data',
+        'sound'
+        ],
     data(){
         return{
             Count: 1,
@@ -35,7 +38,8 @@ export default {
                 longbreak: 15,
                 font: 'Arial',
                 color: '#F87070'
-            }
+            },
+            soundElement: true
         }
     },
     watch: {
@@ -44,11 +48,16 @@ export default {
             this.dataContainer = data
             this.colorButton = data.color
             console.log('this.dataContainer ',this.dataContainer)
+        },
+        sound: function (sound) {
+            this.soundElement = sound
         }
     },
     methods: {
         selectButton(value, number){
-            audioSlide.play()
+            if(this.soundElement){
+                audioSlide.play()
+            }
             this.$emit('count', value)
             this.Count = number
         }

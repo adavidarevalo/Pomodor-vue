@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section v-bind:style="{outline: '4px solid '+ color}">
         <button
         @click="changeSound()"
         v-if='soundActive'
@@ -40,7 +40,8 @@ let  audioSlide = new Audio(require('../assets/sounds/slide.mp3'))
 export default{
     name: 'Clock',
     props: [
-        'count'
+        'count',
+        'colorElement'
     ],
     components: {
         sound,
@@ -52,7 +53,8 @@ export default{
             startButton: false,
             soundActive: true,
             minutes: 15,
-            seconds: 0
+            seconds: 0,
+            color: '#F87070'
         }
     },
     watch: {
@@ -60,8 +62,9 @@ export default{
             this.startButton = false
             this.minutes = count
             this.seconds = 0
-            console.log('minutesx2 ', count)
-            console.log('minutes ', this.minutes)
+        },
+        colorElement: function (value) {
+            this.color = value.color
         }
     },
     methods: {
@@ -69,29 +72,42 @@ export default{
             this.startButton = !this.startButton
             audioFinished.pause()
             if(this.startButton){
-                audioStart.play()
+                if(this.soundActive){
+                    audioStart.play()
+                }
                 this.CountDown();
             } else {
-                audioPause.play()
+                if(this.soundActive){
+                    audioPause.play()
+                }
             }
         },
         reloadCLick(){
-            audioSlide.play()
+            if(this.soundActive){
+                audioSlide.play()
+            }
+            this.startButton = false;
+            this.seconds = 0
+            this.minutes = this.count
         },
         changeSound(){
-            audioSlide.play()
+            if(this.soundActive){
+                audioSlide.play()
+            }
             this.soundActive = !this.soundActive
+            this.$emit('sound', this.soundActive)
         },
         CountDown: function () {
         this.interval = setInterval(()=>{
             if(this.seconds === 0 && this.minutes === 0 || !this.startButton){
                 clearTimeout(this.interval)
                 if(!this.startButton){
-                    console.log('Pause...')
-                    return
+                    return null
                 } 
                 this.startButton = false
-                audioFinished.play()
+                if(this.soundActive){
+                    audioFinished.play()
+                }
             } else if(this.seconds === 0){
                 this.seconds = 59
                 this.minutes = this.minutes - 1
@@ -132,5 +148,9 @@ button{
     font-size: 1.4rem;
     letter-spacing: 5px;
     cursor: pointer;
+}
+button:hover,
+button:active{
+    transform: scale(1.1);
 }
 </style>
