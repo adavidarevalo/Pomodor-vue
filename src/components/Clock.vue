@@ -132,6 +132,7 @@ section{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    animation: fadeIn 1s both;
 }
 p{
     color: #D7E0FF;
@@ -153,4 +154,8 @@ button:hover,
 button:active{
     transform: scale(1.1);
 }
+@keyframes fadeIn {
+0% {opacity: 0;}
+100% {opacity: 1;}
+} 
 </style>

@@ -1,6 +1,6 @@
 <template>
     <main>
-        <div>
+        <div class="Home-Header">
             <h1>pomodoro</h1>
             <HomeNav 
             :data='data'
@@ -93,4 +93,17 @@ main{
     min-height: 89vh;
     justify-content: space-between;
 }
+.Home-Header{
+    animation: fadeInDown 1s both;
+}
+  @keyframes fadeInDown {
+  0% {
+  opacity: 0;
+  transform: translate3d(0, -100%, 0);
+  }
+  100% {
+  opacity: 1;
+  transform: none;
+  }
+  } 
 </style>

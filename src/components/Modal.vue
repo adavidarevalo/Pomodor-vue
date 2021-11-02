@@ -165,6 +165,7 @@ button{
     border-radius: 5px;
     background: white;
     max-width: 500px;
+    animation: fadeInUp 1s both;
 }
 .Form-header{
     display: flex;
@@ -262,4 +263,14 @@ input{
     background: #1F213F !important;
     color: white;
 }
+  @keyframes fadeInUp {
+  0% {
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+  }
+  100% {
+  opacity: 1;
+  transform: none;
+  }
+  } 
 </style>
