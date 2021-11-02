@@ -20,6 +20,7 @@
     </header>
 </template>
 <script>
+let  audioSlide = new Audio(require('../assets/sounds/slide.mp3'))
 
 export default {
     name: 'HomeNav',
@@ -39,13 +40,16 @@ export default {
     },
     watch: {
         data: function (data) {
+            console.log('si ',data)
             this.dataContainer = data
+            this.colorButton = data.color
             console.log('this.dataContainer ',this.dataContainer)
         }
     },
     methods: {
         selectButton(value, number){
-            console.log('value ',value)
+            audioSlide.play()
+            this.$emit('count', value)
             this.Count = number
         }
     }

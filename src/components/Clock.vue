@@ -8,7 +8,7 @@
         v-else
         @click="changeSound()"
         ><noSound/></button>
-        <p>{{minutes}} : {{seconds}}</p>
+        <p>{{minutes}}:{{seconds}}</p>
         <button
         @click="changeButton()"
         v-if="!startButton"
@@ -17,6 +17,12 @@
         v-else
         @click="changeButton()"
         >resume</button>
+        <button
+        style="margin: 15px 0px 0px"
+        @click='reloadCLick()'
+        >
+            <reload/>
+        </button>
     </section>
 </template>
 
@@ -24,43 +30,68 @@
 <script>
 import sound from '@/assets/sound.vue'
 import noSound from '@/assets/noSound.vue'
+import reload from '@/assets/reload.vue'
 
+//Sounds
+let  audioFinished = new Audio(require('../assets/sounds/timesUp.mp3'))
+let  audioStart = new Audio(require('../assets/sounds/startTimer.mp3'))
+let  audioPause = new Audio(require('../assets/sounds/pauseTimer.mp3'))
+let  audioSlide = new Audio(require('../assets/sounds/slide.mp3'))
 export default{
     name: 'Clock',
+    props: [
+        'count'
+    ],
     components: {
         sound,
-        noSound
+        noSound,
+        reload
     },
     data(){
         return{
             startButton: false,
             soundActive: true,
-            numberClock: 15,
-            minutes: 1,
+            minutes: 15,
             seconds: 0
+        }
+    },
+    watch: {
+        count:function (count) {
+            this.startButton = false
+            this.minutes = count
+            this.seconds = 0
+            console.log('minutesx2 ', count)
+            console.log('minutes ', this.minutes)
         }
     },
     methods: {
         changeButton(){
             this.startButton = !this.startButton
+            audioFinished.pause()
             if(this.startButton){
-                console.log('Play baby')
+                audioStart.play()
                 this.CountDown();
+            } else {
+                audioPause.play()
             }
         },
-        changeSound(){
-            this.soundActive = !this.soundActive
+        reloadCLick(){
+            audioSlide.play()
         },
-        clockElement(number = 15){
-            setTimeout(() => {
-                this.numberClock = number - 1
-            }, 1000);
+        changeSound(){
+            audioSlide.play()
+            this.soundActive = !this.soundActive
         },
         CountDown: function () {
         this.interval = setInterval(()=>{
             if(this.seconds === 0 && this.minutes === 0 || !this.startButton){
-                console.log('Terminado...')
                 clearTimeout(this.interval)
+                if(!this.startButton){
+                    console.log('Pause...')
+                    return
+                } 
+                this.startButton = false
+                audioFinished.play()
             } else if(this.seconds === 0){
                 this.seconds = 59
                 this.minutes = this.minutes - 1
@@ -71,8 +102,6 @@ export default{
             }
         },
     }
-
-
 </script>
 <style scoped>
 section{

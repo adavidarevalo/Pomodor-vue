@@ -79,6 +79,7 @@
 <script>
 
 import Close from '../assets/close.vue'
+let  audioSlide = new Audio(require('../assets/sounds/slide.mp3'))
 
 export default{
     name: 'Modal',
@@ -113,15 +114,18 @@ export default{
             this.$emit('close',false);
         },
         sendInformation: function (e) {
+            audioSlide.play()
             e.preventDefault();
             this.$emit('data',this.formContainer);
             this.CloseModal()
         },
         changeColor(number, color){
+            audioSlide.play()
             this.color = number,
             this.formContainer.color = color
         },
         changeFont(number, font){
+            audioSlide.play()
             this.font = number
             this.formContainer.font = font
         }
